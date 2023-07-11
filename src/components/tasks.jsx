@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {getTasks} from '../services/fakeTasks';
+import Complete from './common/complete';
 
 class Tasks extends Component {
     state = {
@@ -38,8 +39,9 @@ class Tasks extends Component {
                             <td>{task.category}</td>
                             <td>{task.severity}</td>
                             <td>
-                                <button onClick={this.handleDelete(task)} className='btn btn-success'>DUNZO!</button>
+                                <button onClick={() => this.handleDelete(task)} className='btn btn-danger'>Delete</button>
                             </td>
+                            <Complete />
                         </tr>
                         )}
                         
