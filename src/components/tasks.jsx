@@ -1,20 +1,32 @@
 import React, { Component } from 'react';
 import {getTasks} from '../services/fakeTasks';
 import Complete from './common/complete';
+import Pagination from './common/pagination';
+import { paginate } from '../utils/paginate';
 
 class Tasks extends Component {
     state = {
-        tasks: getTasks()
-    } 
+        tasks: getTasks(),
+        currentPage: 1,
+        pageSize: 4
+    };
 
-    handleDelete = task =>{
+    handleDelete = task =>{ 
         const tasks = this.state.tasks.filter(t => t._id !== task._id);
         this.setState({tasks});
+    };
+
+    handlePageChange = page => {
+        this.setState({currentPage: page});
     }
 
     render() { 
+        const {pageSize, currentPage, tasks} = this.state;
+
         if(this.state.tasks.length === 0)
             return <p>You are all caught up on your tasks! Go play a video game!</p>;
+
+        const taskItem = paginate(tasks, currentPage, pageSize);
 
         return (
             <div>
@@ -31,7 +43,7 @@ class Tasks extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        {this.state.tasks.map(task => 
+                        {taskItem.map(task => 
                         <tr key={task._id}>
                             <td>{task._id}</td>
                             <td>{task.title}</td>
@@ -47,6 +59,11 @@ class Tasks extends Component {
                         
                     </tbody>
                 </table>
+                <Pagination 
+                    itemsCount={this.state.tasks.length} 
+                    pageSize={this.state.pageSize} 
+                    onPageChange={this.handlePageChange} 
+                    currentPage={this.state.currentPage} />
             </div>
         
         )
