@@ -39,6 +39,54 @@ const tasks = [
     severity: "Very Important",
     complete: false,
     },
+    {
+    _id: "618c3432eddf61c496096469",
+    title: "Stay Hydrated",
+    task: "Drink da dew",
+    category: "DayToDay",
+    severity: "Important",
+    complete: false,
+    },
+    {
+    _id: "618c3432eddf61c496096436",
+    title: "Stay Hydrated",
+    task: "Drink da dew",
+    category: "DayToDay",
+    severity: "Very Important",
+    complete: false,
+    },
+    {
+    _id: "618c3432eddf61c496096768",
+    title: "Stay Hydrated",
+    task: "Drink da dew",
+    category: "DayToDay",
+    severity: "Normal",
+    complete: false,
+    },
+    {
+    _id: "618c3432eddf61c496096984",
+    title: "Stay Hydrated",
+    task: "Drink da dew",
+    category: "DayToDay",
+    severity: "Important",
+    complete: false,
+    },
+    {
+    _id: "618c3432eddf61c49609608a",
+    title: "Stay Hydrated",
+    task: "Drink da dew",
+    category: "DayToDay",
+    severity: "Normal",
+    complete: false,
+    },
+    {
+    _id: "618c3432eddf61c4960964r5",
+    title: "Stay Hydrated",
+    task: "Drink da dew",
+    category: "DayToDay",
+    severity: "Very Important",
+    complete: false,
+    },
     ];
     export function getTasks() {
     console.log(tasks);
@@ -65,4 +113,7 @@ const tasks = [
     tasks.splice(tasks.indexOf(taskInDb), 1);
     return taskInDb;
     }
-    
+    export function getSeverity() {
+        const severities = tasks.map((item) => item.severity);
+        return severities;
+      }
