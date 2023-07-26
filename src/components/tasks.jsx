@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'; 
 import {getTasks} from '../services/fakeTasks';
 import { getSeverity } from '../services/fakeTaskSeverity';
 import Complete from './common/complete';
@@ -11,12 +11,11 @@ class Tasks extends Component {
         tasks: [],
         severity: [],
         currentPage: 1,
-        pageSize: 4,
-        selectedSeverity: null
+        pageSize: 4
     };
 
     componentDidMount(){
-        const severity = [{name: 'All Tasks'}, ...getTasks()]
+        const severity = [{name: 'All Tasks'}, ...getSeverity()]
 
         this.setState({tasks: getTasks(), severity});
     };
@@ -36,13 +35,13 @@ class Tasks extends Component {
     };
 
     render() { 
-        const {pageSize, currentPage, tasks, selectedSeverity} = this.state;
+        const {selectedSeverity, pageSize, currentPage, tasks} = this.state;
 
         if(this.state.tasks.length === 0)
             return <p>You are all caught up on your tasks! Go play a video game!</p>;
 
         const filtered = selectedSeverity && selectedSeverity._id ? tasks.filter(t => t.severity._id === selectedSeverity._id) : tasks;
-        
+
         const taskItem = paginate(filtered, currentPage, pageSize);
 
         return (
@@ -72,7 +71,7 @@ class Tasks extends Component {
                             <td>{task.title}</td>
                             <td>{task.task}</td>
                             <td>{task.category}</td>
-                            <td>{task.severity}</td>
+                            <td>{task.severity.name}</td>
                             <td>
                                 <button onClick={() => this.handleDelete(task)} className='btn btn-danger'>Delete</button>
                             </td>
