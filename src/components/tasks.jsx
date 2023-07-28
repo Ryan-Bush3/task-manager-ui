@@ -5,23 +5,25 @@ import Complete from './common/complete';
 import Pagination from './common/pagination';
 import ListGroup from './common/listGroup';
 import { paginate } from '../utils/paginate';
+import _ from 'lodash';
 
 class Tasks extends Component {
     state = {
         tasks: [],
         severity: [],
         currentPage: 1,
-        pageSize: 4
+        pageSize: 4,
+        sortColumn: {path: 'title', order: 'asc'}
     };
 
     componentDidMount(){
-        const severity = [{name: 'All Tasks'}, ...getSeverity()]
+        const severity = [{_id: '', name: 'All Tasks'}, ...getSeverity()]
 
         this.setState({tasks: getTasks(), severity});
     };
 
     handleSeveritySelect = severity => {
-        this.setState({selectedSeverity: severity, currentPage: 1})
+        this.setState({selectedSeverity: severity, currentPage: 1});
         console.log(severity);
     };
 
@@ -34,15 +36,28 @@ class Tasks extends Component {
         this.setState({currentPage: page});
     };
 
+    handleSort = path => {
+        const sortColumn = {...this.state.sortColumn};
+        if (sortColumn.path === path)
+            sortColumn.order = (sortColumn.order === 'asc') ? 'desc' : 'asc';
+        else{
+            sortColumn.path = path;
+            sortColumn.order = 'asc';
+        }
+        this.setState({sortColumn});
+    };
+
     render() { 
-        const {selectedSeverity, pageSize, currentPage, tasks} = this.state;
+        const {selectedSeverity, pageSize, currentPage, tasks, sortColumn} = this.state;
 
         if(this.state.tasks.length === 0)
             return <p>You are all caught up on your tasks! Go play a video game!</p>;
 
         const filtered = selectedSeverity && selectedSeverity._id ? tasks.filter(t => t.severity._id === selectedSeverity._id) : tasks;
 
-        const taskItem = paginate(filtered, currentPage, pageSize);
+        const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order])
+
+        const taskItem = paginate(sorted, currentPage, pageSize);
 
         return (
             <div className='row'>
@@ -57,12 +72,12 @@ class Tasks extends Component {
                 <table className="table">
                     <thead>
                         <tr>
-                            <th>Title</th>
-                            <th>Task</th>
-                            <th>Category</th>
-                            <th>Severity</th>
+                            <th onClick={() => this.handleSort('title')}>Title</th>
+                            <th onClick={() => this.handleSort('task.name')}>Task</th>
+                            <th onClick={() => this.handleSort('category')}>Category</th>
+                            <th onClick={() => this.handleSort('severity.name')}>Severity</th>
                             <th></th>
-                            <th></th>
+                            <th>Completed</th>
                         </tr>
                     </thead>
                     <tbody>

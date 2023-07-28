@@ -10,12 +10,15 @@ class Complete extends Component {
             borderRadius: '5px',
             padding: '6px'
         };
+        const newstyle = {
+            textAlign: 'center'
+        }
 
         return (
-            <div>
-                <label style={mystyle}>
+            <div style={newstyle}>
+                {/* <label style={mystyle}>
                     Completed
-                </label>
+                </label> */}
                 <input type="checkbox" />
             </div>
         );
